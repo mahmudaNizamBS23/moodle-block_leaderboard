@@ -26,6 +26,10 @@ function block_leaderboard_process_form(dropdown_form $mform){
 function block_leaderboard_current_user_rank($courseid,$userid){
     
 
+    $rankstr = get_string('myrank', 'block_leaderboard');
+    $pointsstr = get_string('points', 'block_leaderboard');
+    $nextrankstr = get_string('pointsneeded', 'block_leaderboard');
+
     $userpoints = 0;
     $nextrank = 0;
     $myrank = 0; 
@@ -60,9 +64,9 @@ function block_leaderboard_current_user_rank($courseid,$userid){
            <div class="card border-primary">
            <div class="card-body">
            <div class="row">
-           <div class="col"><h5 class="text-primary" >My Rank: ' . $myrank . '</h5></div>
-           <div class="col"><h5 class="text-primary" >Points: ' . $userpoints . '</h5></div>
-           <div class="col"><h5 class="text-primary" >Points to next rank:' .$pointsneeded . '</h5></div> <!-- Show points needed -->
+           <div class="col"><h5 class="text-primary" >' .$rankstr. $myrank . '</h5></div>
+           <div class="col"><h5 class="text-primary" >' .$pointsstr. $userpoints . '</h5></div>
+           <div class="col"><h5 class="text-primary" >' .$nextrankstr.$pointsneeded . '</h5></div> <!-- Show points needed -->
            </div>
            </div>
            </div>
@@ -96,7 +100,7 @@ function block_leaderboard_each_users_points($users,$courseid){
         $userrecord = $DB->get_record('user', ['id' => $userid], 'id, firstname, lastname');
         $username = $userrecord ? $userrecord->firstname . ' ' . $userrecord->lastname : 'Unknown User';
 
-        $sql = "SELECT gg.finalgrade AS grade, gi.grademax AS max_grade, gg.userid as userid
+        $sql = "SELECT gi.id AS gradeid, gg.finalgrade AS grade, gi.grademax AS max_grade, gg.userid as userid
                 FROM {grade_grades} gg
                 JOIN {grade_items} gi ON gg.itemid = gi.id
                 JOIN {course_modules} cm ON gi.iteminstance = cm.instance
@@ -129,7 +133,16 @@ function block_leaderboard_each_users_badges($userid,$courseid){
              JOIN {supermathbadge} sb ON sbu.course = sb.course
              JOIN {mod_supermathbadge_picurl} sbp ON sb.id = sbp.supermathbadgeid
              WHERE sbu.course = $courseid AND sbu.userid = $userid;";
-    $badges = $DB->get_records_sql($sql);
+    $badgearr = $DB->get_records_sql($sql);
+    foreach($badgearr as $badge){
+        $badges[] = [
+            'badge_name' => $badge->name,
+            'badge_picture' => (new moodle_url($badge->badge_picture))->out(),
+        ];
+
+    }
+   
+    
     return $badges;
 }
 // this function will get the ranks of each user enrolled in a course
@@ -170,37 +183,16 @@ function block_leaderboard_return_rank ($courseid){
 
 //this function will append a leaderboard table;
 function block_leaderboard_display_leaderboard_table($rankedusers){
-    echo '<div class="m-5">';
-    echo '<table class="table table-striped p-5 text-center">';
-    echo '<tr class="table-primary">
-            <th>Rank</th>
-             <th>Badges</th>
-            <th>Name</th>
-            <th>Points</th>
-          </tr>';
+    global $OUTPUT;
 
-    foreach ($rankedusers as $user) {
-        echo '<tr>';
-        echo '<td>' . $user['rank'] . '</td>';
-        
+    // Prepare data for the template.
+    $templatecontext = [
+        'rankedusers' => $rankedusers
+    ];
 
-        // Display badges in a cell
-        echo '<td>';
-        if (!empty($user['badges'])) {
-            foreach ($user['badges'] as $badge) {
-                echo '<img src="' . $badge->badge_picture . '" alt="' . $badge->badge_name . '" title="' . $badge->badge_name . '" style="width:50px; height:50px; margin-right:5px;">';
-            }
-        } else {
-            echo 'No badges';
-        }
-        echo '</td>';
-        echo '<td>' . $user['name'] . '</td>';
-        echo '<td>' . $user['points'] . '</td>';
+    // Render and display the template.
+    echo $OUTPUT->render_from_template('block_leaderboard/leaderboard', $templatecontext);
 
-        echo '</tr>';
-    }
 
-    echo '</table>';
-    echo '</div>';
 
 }

@@ -56,7 +56,7 @@ class block_leaderboard extends block_base {
             include($content_file);
             $form_html = ob_get_clean();
         } else {
-            $form_html = 'Error: Content file not found.';
+            $form_html = get_string('error', 'block_leaderboard');
         }
 
         // Assign the form or content to the block's content

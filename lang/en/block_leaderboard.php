@@ -14,3 +14,7 @@ $string['submit'] = 'Submit';
 $string['reset'] = 'Reset';
 $string['nocoursesavailable'] = 'No courses available';
 $string['message'] = 'Select a course to view the leaderboard for each course.';
+$string['error'] = 'Error!Content file not found.';
+$string['myrank'] = 'My Rank: ';
+$string['points'] ='Points: ';
+$string['pointsneeded'] ='Points to next rank: ';

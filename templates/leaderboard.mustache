@@ -1,0 +1,26 @@
+<!-- leaderboard.mustache -->
+<div class="m-5">
+    <table class="table table-striped p-5 text-center">
+        <tr class="table-primary">
+            <th>Rank</th>
+            <th>Badges</th>
+            <th>Name</th>
+            <th>Points</th>
+        </tr>
+        {{#rankedusers}}
+        <tr>
+            <td>{{rank}}</td>
+            <td>
+                {{#badges}}
+                    <img src="{{badge_picture}}" alt="{{badge_name}}" title="{{badge_name}}" style="width:50px; height:50px; margin-right:5px;">
+                {{/badges}}
+                {{^badges}}
+                    No badges
+                {{/badges}}
+            </td>
+            <td>{{name}}</td>
+            <td>{{points}}</td>
+        </tr>
+        {{/rankedusers}}
+    </table>
+</div>
