@@ -5,16 +5,16 @@ accumulated course points and badges, promoting a motivational atmosphere in lea
 
 # Features
 
--Ranks users based on their total course points and displays the leaderboard in an organized table format.
--Students can view their current rank, points, and the points needed to achieve the next rank.
--Retrieves enrolled students in a specified course to ensure rankings are course-specific.
+- Ranks users based on their total course points and displays the leaderboard in an organized table format.
+- Students can view their current rank, points, and the points needed to achieve the next rank.
+- Retrieves enrolled students in a specified course to ensure rankings are course-specific.
 
 # Installation 
 
--Download the zip file 
--Install the zip file by navigating to Moodle Site Administration->Plugins->Install Plugins
+- Download the zip file 
+- Install the zip file by navigating to Moodle Site Administration->Plugins->Install Plugins
 
 # Usage 
 
--Add the Leaderboard block to a course or user dashboard. 
--The plugin will automatically display students' ranks and points based on course grades.
+- Add the Leaderboard block to a course or user dashboard. 
+- The plugin will automatically display students' ranks and points based on course grades.
