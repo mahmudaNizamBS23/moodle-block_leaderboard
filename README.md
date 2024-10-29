@@ -1,4 +1,5 @@
 #Leaderboard Plugin
+
 The Leaderboard block plugin for Moodle allows administrators and teachers to create a competitive, engaging environment within courses by displaying a dynamic leaderboard. This plugin calculates and displays student ranks based on their 
 accumulated course points and badges, promoting a motivational atmosphere in learning environments. Students can track their progress relative to peers, viewing their own rank, points, and required points to reach the next level. This block plugin is ideal for gamifying course experiences.
 
