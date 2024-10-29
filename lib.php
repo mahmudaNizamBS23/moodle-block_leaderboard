@@ -74,12 +74,12 @@ function block_leaderboard_current_user_rank($courseid,$userid){
 function block_leaderboard_get_users($courseid){
     global $DB;
     $sql = "SELECT u.id AS userid
-            FROM mdl_user u
-            JOIN mdl_user_enrolments ue ON ue.userid = u.id
-            JOIN mdl_enrol e ON ue.enrolid = e.id
-            JOIN mdl_role_assignments ra ON ra.userid = u.id
-            JOIN mdl_context ctx ON ra.contextid = ctx.id
-            JOIN mdl_role r ON r.id = ra.roleid
+            FROM {user} u
+            JOIN {user_enrolments} ue ON ue.userid = u.id
+            JOIN {enrol} e ON ue.enrolid = e.id
+            JOIN {role_assignments} ra ON ra.userid = u.id
+            JOIN {context} ctx ON ra.contextid = ctx.id
+            JOIN {role} r ON r.id = ra.roleid
             WHERE e.courseid = $courseid AND r.shortname = 'student'  AND ctx.contextlevel = 50   GROUP BY u.id;";
     $users = $DB->get_records_sql($sql);
 
@@ -97,10 +97,10 @@ function block_leaderboard_each_users_points($users,$courseid){
         $username = $userrecord ? $userrecord->firstname . ' ' . $userrecord->lastname : 'Unknown User';
 
         $sql = "SELECT gg.finalgrade AS grade, gi.grademax AS max_grade, gg.userid as userid
-                FROM moodle405.mdl_grade_grades gg
-                JOIN moodle405.mdl_grade_items gi ON gg.itemid = gi.id
-                JOIN moodle405.mdl_course_modules cm ON gi.iteminstance = cm.instance
-                JOIN moodle405.mdl_modules m ON gi.itemmodule = m.name AND cm.module = m.id
+                FROM {grade_grades} gg
+                JOIN {grade_items} gi ON gg.itemid = gi.id
+                JOIN {course_modules} cm ON gi.iteminstance = cm.instance
+                JOIN {modules} m ON gi.itemmodule = m.name AND cm.module = m.id
                 WHERE cm.course = :courseid AND gg.userid = :userid AND gi.grademax != ''";
         $params = ['courseid' => $courseid, 'userid' => $userid];
         $results = $DB->get_records_sql($sql, $params);
